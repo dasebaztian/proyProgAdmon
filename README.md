@@ -17,7 +17,10 @@ acerca del estado sobre el que se encuentra el respaldo (Iniciado o terminado).
 Para detectar que se ha conectado una memoria al sistema se hace uso de la siguiente regla udev:
 
 ´´´udev
-	SUBSYSTEM=="block", ACTION=="add", RUN+="/home/dasebaztian/proyProgAdmon/backup.sh"
+	SUBSYSTEM=="block", ATTRS{idVendor}=="0390", ACTION=="add", SYMLINK+="backup%n"
+	SUBSYSTEM=="block", ACTION=="add", ATTRS{idVendor}=="0930", RUN+="/home/dasebaztian/proyProgAdmon/backup.sh"
 ´´´
-En esta lo que se hace es detectar si un sistema de bloques (Almacenamiento) ha sido añadido al servidor, en caso de detectarse se ejecuta el script
-del apartado RUN
+
+En esta lo que se hace es detectar si un sistema de bloques (Almacenamiento) con el atributo **"idVendor:0390"** ha sido añadido al servidor si se ha
+añadido se le asigna el link símbolico de **backup%n** lo que daría cómo resultado backup[1...] según cuantos dispositivos hayan conectados. Despúes se
+especifica que se debe de correr el script del apartado **RUN+=**. 
